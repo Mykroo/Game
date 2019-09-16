@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chat romo</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+</head>
+<body>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			
+			var socket = io.connect('http://192.168.1.116:5000');
+
+			socket.on('connect', function(){
+				socket.send('User has connect!!!');
+			});
+			socket.on('message', function(msg){
+				$("#messages").append('<li>'+msg+'</li>')
+				console.log('Receiveeed')
+			});
+
+			$('#sendBtn').on('click', function(){
+				socket.send($('#myMess').val());
+			})
+		});
+	</script>
+	<ul id="messages"></ul>
+	<input type="text" id="myMess">
+	<input type="button" id="sendBtn" value="Send">
+</body>
+</html>

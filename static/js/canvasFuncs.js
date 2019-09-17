@@ -1,33 +1,72 @@
-var ballX=75, ballY=20, ballSize=10, up = true, front= true
-var xSpeed = 0
-var ySpeed = 0
-// canvas = document.getElementById('gameCanvas')
-// ctx/ = canvas.getContext('2d')
-window.onload = function(){
-	var framesPerSec = 60
-	// setInterval(updateAll, 1000/framesPerSec) // means 30 time per second 
+//controller section
+var rightPressed = false;
+var leftPressed = false;
+var upPressed = false;
+var downPressed = false;
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
+var KeyboardHelper = { left: 37, up: 38, right: 39, down: 40 };
+
+function keyDownHandler(event) {
+    if(event.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(event.keyCode == 37) {
+        leftPressed = true;
+    }
+    if(event.keyCode == 40) {
+    	downPressed = true;
+    }
+    else if(event.keyCode == 38) {
+    	upPressed = true;
+    }
 }
-function updateAll(){
+
+//END controller 
+
+
+// Measuring FPS
+const times = [];
+let fps;
+function refreshLoop() {
+  window.requestAnimationFrame(() => {
+    const now = performance.now();
+    while (times.length > 0 && times[0] <= now - 1000) {
+      times.shift();
+    }
+    times.push(now);
+    fps = times.length;
+    refreshLoop();
+  });
+}
+refreshLoop();
+// END FPS
+
+function paintPlayers(players){
+	console.log('fps: '+fps)
 	colorRect(0, 0, canvas.width, canvas.height, 'cyan')// clear scr
-	
-	colorCircle(ballX, ballY, ballSize, 'blue')
-				
-	ballX += xSpeed
-	ballY += ySpeed
-	if(ballX >= canvas.width || ballX < 0){
-		xSpeed *= -1
-	}			
-	if(ballY >= canvas.height || ballY < 0){
-		ySpeed *= -1
+	for (var p in players){
+		if (!PLAYER_COLORS[players[p]['id']])
+			PLAYER_COLORS[players[p]['id']] = ranColor();
+		console.log(players[p])
+		console.log('PAINTING Player '+ players[p]['number'] + 'x: '+players[p]['x']+'y:'+players[p]['y'] )
+		// console.log('colorCircle('+players[p]['x']+','+players[p]['y']+',30,'+players[p]['id']+')')
+		colorCircle(players[p]['x'], players[p]['y'], 30, PLAYER_COLORS[players[p]['id']])
+
 	}
 }
-function colorRect(topLeftX, topLeftY, boxWidth,boxHeight, fillColor){
-	canvContext.fillStyle = fillColor
-	canvContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight)
+function ranColor(){
+	var o = Math.round, r = Math.random, s = 255;
+	return 'rgba(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ',' + r().toFixed(1) + ')';
 }
-function colorCircle(centX, centY, radius, fillColor){
-	canvContext.fillStyle = fillColor
-	canvContext.beginPath()
-	canvContext.arc(ballX, ballY, ballSize, 0, Math.PI * 2, true)
-	canvContext.fill()
+
+function colorRect(topLeftX, topLeftY, boxWidth,boxHeight, fillColor){
+	ctx.fillStyle = fillColor
+	ctx.fillRect(topLeftX, topLeftY, boxWidth, boxHeight)
+}
+function colorCircle(X, Y, radius, fillColor){
+	ctx.fillStyle = fillColor
+	ctx.beginPath()
+	ctx.arc(X, Y, radius, 0, Math.PI * 2, true)
+	ctx.fill()
 }

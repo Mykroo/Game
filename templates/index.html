@@ -10,9 +10,12 @@
 <body>	
 	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
 	<script type="text/javascript">
-
+		var PLAYER_COLORS = {};
+		var canvas;
+		var ctx;
 		$(document).ready(function(){
-
+			canvas = $('#gameCanvas')[0]
+			ctx = canvas.getContext('2d')
 			var socket = io.connect(window.location.origin); // geting ip/ hostname'http://192.168.1.116:5000');
 
 			// socket.on('connect', function(){
@@ -26,7 +29,7 @@
 
 			socket.on('newPos',function(data){
 				console.log(JSON.parse(data))
-				// console.log(data)
+				paintPlayers(JSON.parse(data))
 			});
 
 			$('#sendBtn').on('click', function(){

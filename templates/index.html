@@ -7,27 +7,55 @@
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 </head>
-<body>
+<body>	
+	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
 	<script type="text/javascript">
-		$(document).ready(function(){
-			
-			var socket = io.connect('http://192.168.1.116:5000');
 
-			socket.on('connect', function(){
-				socket.send('User has connect!!!');
-			});
+		$(document).ready(function(){
+
+			var socket = io.connect(window.location.origin); // geting ip/ hostname'http://192.168.1.116:5000');
+
+			// socket.on('connect', function(){
+			// 	socket.send('User has been connected!!!');
+			// });
+
 			socket.on('message', function(msg){
 				$("#messages").append('<li>'+msg+'</li>')
-				console.log('Receiveeed')
+				// console.log('Receiveeed')
+			});
+
+			socket.on('newPos',function(data){
+				console.log(JSON.parse(data))
+				// console.log(data)
 			});
 
 			$('#sendBtn').on('click', function(){
 				socket.send($('#myMess').val());
+			});
+
+			$('#TICKSBtn').on('click', function(){
+				socket.send('TICKS');
 			})
 		});
+
 	</script>
+	<canvas id="gameCanvas" width="800" height="500">
+	</canvas>
+
 	<ul id="messages"></ul>
 	<input type="text" id="myMess">
 	<input type="button" id="sendBtn" value="Send">
+	<input type="button" id="TICKSBtn" value="GET TIKITIKI">
+
+
+	<!-- Loading JS files -->
+	<script type="text/javascript">
+		function function_name(argument) {
+			// body...
+			$(document).ready(function(){
+
+			});
+		}
+	</script>
 </body>
 </html>

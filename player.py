@@ -12,6 +12,8 @@ class Player(object):
 		"""
 		super(Player, self).__init__()
 		# self.socket = socket
+		self.animation = "walk"
+		self.rotate = False
 		self.speed  = 5
 		self.keys = {
 			"tab"   : False,
@@ -28,6 +30,7 @@ class Player(object):
 
 	def update(self):
 		# print("Updating pos ------ Keys:", self.keys )
+		self.rotate = False
 		if self.keys["tab"]:
 			pass
 		if self.keys["space"]:
@@ -35,6 +38,7 @@ class Player(object):
 
 		if self.keys["left"]:
 			self.x -= self.speed
+			self.rotate = True
 		if self.keys["right"]:
 			self.x += self.speed
 		if self.keys["up"]:
@@ -42,16 +46,17 @@ class Player(object):
 		if self.keys["down"]:
 			self.y += self.speed
 
-
+	def animationStatus():
+		pass
 
 	def walk():
-		frame = 0
+		pass
 
 	def __repr__(self):
 		return "Player([{}, {}, {}, {}])".format(self.id, self.number, self.x, self.y)
 
 	def __str__(self):
-		return "id: {}, number: {}, x: {}, y: {}])".format(self.id, self.number, self.x, self.y)
+		return "id: {}, number: {}, x: {}, y: {}, status: ])".format(self.id, self.number, self.x, self.y, self.rotate)
 
 	def jsonify(self):
 		# self.update()
@@ -59,7 +64,8 @@ class Player(object):
 				'number': self.number,
 				'x': self.x,
 				'y': self.y,
-				'keys': self.keys
+				'keys': self.keys,
+				'rotate': self.rotate
 				}
 
 	def keyUpdate(self, key, status):

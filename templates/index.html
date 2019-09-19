@@ -9,6 +9,7 @@
 </head>
 <body>
 
+	<script src="{{ url_for('static',filename='js/varsLoad.js') }}"></script>
 	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
 	<script type="text/javascript">
 
@@ -87,6 +88,8 @@
 
 	</script>
 	<canvas id="gameCanvas" width="800" height="500">
+	</canvas>
+	<canvas id="gameCanvas2" width="200" height="200">
 	</canvas>
 
 	<ul id="messages"></ul>

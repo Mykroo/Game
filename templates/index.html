@@ -7,10 +7,18 @@
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
 </head>
-<body>	
+<body>
+
 	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
 	<script type="text/javascript">
+
+		//The next lines are for stats.js square
+		// javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+		//end stat.js
+		
+
 		var PLAYER_COLORS = {};
+		var sid;
 		var canvas;
 		var ctx;
 		$(document).ready(function(){
@@ -26,9 +34,14 @@
 				$("#messages").append('<li>'+msg+'</li>')
 				// console.log('Receiveeed')
 			});
+			socket.on('connected', function(data){
+				// $("#messages").append('<li>'+msg+'</li>')
+				// console.log('Receiveeed')
+				console.log('Player id:', data)//.id, "Player Number:", data.number)
+			});
 
 			socket.on('newPos',function(data){
-				console.log(JSON.parse(data))
+				// console.log(JSON.parse(data))
 				paintPlayers(JSON.parse(data))
 			});
 
@@ -39,6 +52,37 @@
 			$('#TICKSBtn').on('click', function(){
 				socket.send('TICKS');
 			})
+
+			document.onkeydown = function(event) {
+			    if(event.keyCode == 39) {
+			        socket.emit('keyPress',{"key": "right", "status": true})
+			    }
+			    else if(event.keyCode == 40) {
+			        socket.emit('keyPress',{"key": "down", "status": true})
+			    }
+			    else if(event.keyCode == 37) {
+			        socket.emit('keyPress',{"key": "left", "status": true})
+			    }
+			    else if(event.keyCode == 38) {
+			        socket.emit('keyPress',{"key": "up", "status": true})
+			    }
+			    
+			}
+			document.onkeyup = function(event) {
+			    if(event.keyCode == 39) {
+			        socket.emit('keyPress',{"key": "right", "status": false})
+			    }
+			    else if(event.keyCode == 40) {
+			        socket.emit('keyPress',{"key": "down", "status": false})
+			    }
+			    else if(event.keyCode == 37) {
+			        socket.emit('keyPress',{"key": "left", "status": false})
+			    }
+			    else if(event.keyCode == 38) {
+			        socket.emit('keyPress',{"key": "up", "status": false})
+			    }
+			}
+
 		});
 
 	</script>
@@ -52,13 +96,5 @@
 
 
 	<!-- Loading JS files -->
-	<script type="text/javascript">
-		function function_name(argument) {
-			// body...
-			$(document).ready(function(){
-
-			});
-		}
-	</script>
 </body>
 </html>

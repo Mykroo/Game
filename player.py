@@ -4,32 +4,64 @@ class Player(object):
 		"""Summary constructor
 
 		Args:
-		    id (TYPE): socket id
+		    id (hex): socket id
 		    number (TYPE): player number
-		    pox (TYPE): position x
-		    poy (TYPE): position y
+		    pox (int): position x
+		    poy (int): position y
+		    keys (dict): {'key':'status'}
 		"""
 		super(Player, self).__init__()
 		# self.socket = socket
-		self.pressLeft  = None
-		self.pressRight = None
-		self.pressUp    = None
-		self.pressDown  = None
+		self.speed  = 5
+		self.keys = {
+			"tab"   : False,
+			"space" : False,
+			"left"  : False,
+			"right" : False,
+			"up"    : False,
+			"down"  : False
+		}
 		self.id         = id
 		self.number     = int(number)
 		self.x          = int(pox)
 		self.y          = int(poy)
 
+	def update(self):
+		# print("Updating pos ------ Keys:", self.keys )
+		if self.keys["tab"]:
+			pass
+		if self.keys["space"]:
+			pass
+
+		if self.keys["left"]:
+			self.x -= self.speed
+		if self.keys["right"]:
+			self.x += self.speed
+		if self.keys["up"]:
+			self.y -= self.speed
+		if self.keys["down"]:
+			self.y += self.speed
+
+
+
 	def walk():
 		frame = 0
 
-
 	def __repr__(self):
 		return "Player([{}, {}, {}, {}])".format(self.id, self.number, self.x, self.y)
-	
 
 	def __str__(self):
 		return "id: {}, number: {}, x: {}, y: {}])".format(self.id, self.number, self.x, self.y)
 
 	def jsonify(self):
-		return {'id':self.id,'number':self.number,'x':self.x,'y':self.y}
+		# self.update()
+		return {'id': self.id,
+				'number': self.number,
+				'x': self.x,
+				'y': self.y,
+				'keys': self.keys
+				}
+
+	def keyUpdate(self, key, status):
+		# print("Key & Status: ", key, status)
+		self.keys[key] = status

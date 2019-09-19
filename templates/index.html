@@ -20,6 +20,7 @@
 
 		var PLAYER_COLORS = {};
 		var sid;
+		var p_num;
 		var canvas;
 		var ctx;
 		$(document).ready(function(){
@@ -32,12 +33,14 @@
 			// });
 
 			socket.on('message', function(msg){
-				$("#messages").append('<li>'+msg+'</li>')
+				$("#messages").append(sid.slice(0,6)+": "+msg+'\n')
 				// console.log('Receiveeed')
 			});
 			socket.on('connected', function(data){
 				// $("#messages").append('<li>'+msg+'</li>')
 				// console.log('Receiveeed')
+				sid = data.id
+				p_num = data.number
 				console.log('Player id:', data)//.id, "Player Number:", data.number)
 			});
 
@@ -91,8 +94,9 @@
 	</canvas>
 	<canvas id="gameCanvas2" width="200" height="200">
 	</canvas>
-
-	<ul id="messages"></ul>
+	<br>
+	<textarea name="" id="messages" cols="120" rows="10"></textarea>
+	<br>
 	<input type="text" id="myMess">
 	<input type="button" id="sendBtn" value="Send">
 	<input type="button" id="TICKSBtn" value="GET TIKITIKI">

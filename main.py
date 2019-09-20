@@ -52,7 +52,7 @@ def handleMessage(msg):
 		except Exception as e:
 			send(str(e))
 	else:
-		print('message', msg)
+		print('message', {"msg": msg, "id": request.sid})
 		send(msg, broadcast=True)
 
 
@@ -82,7 +82,7 @@ def connection():
 		# PLAYERS[socket.id] = socket
 	else:
 		print('********************   Known connection!!!!   ********************')
-	print(str(PLAYERS))
+	# print(str(PLAYERS))
 
 
 @socketio.on('disconnect')

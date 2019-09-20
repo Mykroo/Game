@@ -6,88 +6,22 @@
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
 	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 
+	<script src="{{ url_for('static',filename='js/init.js') }}"></script>
+	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
 </head>
 <body>
 
-	<script src="{{ url_for('static',filename='js/varsLoad.js') }}"></script>
-	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
 	<script type="text/javascript">
 
 		//The next lines are for stats.js square
 		// javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
 		//end stat.js
-		
 
-		var PLAYER_COLORS = {};
-		var sid;
-		var p_num;
-		var canvas;
-		var ctx;
-		$(document).ready(function(){
-			canvas = $('#gameCanvas')[0]
-			ctx = canvas.getContext('2d')
-			var socket = io.connect(window.location.origin); // geting ip/ hostname'http://192.168.1.116:5000');
-
-			// socket.on('connect', function(){
-			// 	socket.send('User has been connected!!!');
-			// });
-
-			socket.on('message', function(msg){
-				$("#messages").append(sid.slice(0,6)+": "+msg+'\n')
-				// console.log('Receiveeed')
-			});
-			socket.on('connected', function(data){
-				// $("#messages").append('<li>'+msg+'</li>')
-				// console.log('Receiveeed')
-				sid = data.id
-				p_num = data.number
-				console.log('Player id:', data)//.id, "Player Number:", data.number)
-			});
-
-			socket.on('newPos',function(data){
-				// console.log(JSON.parse(data))
-				paintPlayers(JSON.parse(data))
-			});
-
-			$('#sendBtn').on('click', function(){
-				socket.send($('#myMess').val());
-			});
-
-			$('#TICKSBtn').on('click', function(){
-				socket.send('TICKS');
-			})
-
-			document.onkeydown = function(event) {
-			    if(event.keyCode == 39) {
-			        socket.emit('keyPress',{"key": "right", "status": true})
-			    }
-			    else if(event.keyCode == 40) {
-			        socket.emit('keyPress',{"key": "down", "status": true})
-			    }
-			    else if(event.keyCode == 37) {
-			        socket.emit('keyPress',{"key": "left", "status": true})
-			    }
-			    else if(event.keyCode == 38) {
-			        socket.emit('keyPress',{"key": "up", "status": true})
-			    }
-			    
-			}
-			document.onkeyup = function(event) {
-			    if(event.keyCode == 39) {
-			        socket.emit('keyPress',{"key": "right", "status": false})
-			    }
-			    else if(event.keyCode == 40) {
-			        socket.emit('keyPress',{"key": "down", "status": false})
-			    }
-			    else if(event.keyCode == 37) {
-			        socket.emit('keyPress',{"key": "left", "status": false})
-			    }
-			    else if(event.keyCode == 38) {
-			        socket.emit('keyPress',{"key": "up", "status": false})
-			    }
-			}
-
+		$(document).ready(function () {
+			network()
 		});
+
+		// console.log('Data waiting for ready')
 
 	</script>
 	<canvas id="gameCanvas" width="800" height="500">

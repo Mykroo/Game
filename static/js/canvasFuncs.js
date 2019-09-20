@@ -1,14 +1,10 @@
-var secCalls = 0
-var lastSec = getSecs()
-var maxFPS = 0
-
-
 
 function getSecs(){
     var d = new Date();
 	var t = d.getTime();
 	return t
 }
+lastSec = getSecs()
 function callsPerSecond(){ //My guess of how to calculate FPS
 	fps = 1
 	currMilis = (getSecs()-lastSec)

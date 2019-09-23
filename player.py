@@ -58,7 +58,12 @@ class Player(object):
 	def __str__(self):
 		return "id: {}, number: {}, x: {}, y: {}, status: ])".format(self.id, self.number, self.x, self.y, self.rotate)
 
+	def toJSON(self):
+		return json.dumps(self, default=lambda o: o.__dict__, 
+			sort_keys=True, indent=4)
+
 	def jsonify(self):
+			
 		# self.update()
 		return {'id': self.id,
 				'number': self.number,

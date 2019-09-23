@@ -10,7 +10,9 @@ var canvas;
 var ctx;
 var ctx2;
 var preimg = new Image();
-var animStat = 0 
+var animStat = 0
+var tiles_sprites = {}
+var tiles_imgs = {}
 var imgsJson =[{
 	"0":
 	{
@@ -240,12 +242,36 @@ var imgsJson =[{
 	}
 }
 ]
+var enemie_sprites = {
+						"blockerBody": [{"x": 203, "y": 0, "w": 51, "h": 51},
+										{"x": 136, "y": 66, "w": 51, "h": 51},
+										{"x": 188, "y": 66, "w": 51, "h": 51}],
+						"fishDead": [{"x": 0, "y": 69, "w": 66, "h": 42}],
+						"fishSwim": [{"x": 76, "y": 0, "w": 66, "h": 42},
+									{"x": 73, "y": 43, "w": 62, "h": 43}],
+						"flyDead": [{"x": 143, "y": 0, "w": 59, "h": 33}],
+						"flyFly": [{"x": 0, "y": 32, "w": 72, "h": 36},
+							  		{"x": 0, "y": 0, "w": 75, "h": 31}],
+						"poker": [{"x": 255, "y": 0, "w": 48, "h": 146},
+							 		{"x": 304, "y": 0, "w": 48, "h": 146}],
+						"slimeDead": [{"x": 0, "y": 112, "w": 59, "h": 12}],
+						"slimeWalk": [{"x": 52, "y": 125, "w": 50, "h": 28},
+										{"x": 0, "y": 125, "w": 51, "h": 26}],
+						"snailShell": [{"x": 103, "y": 119, "w": 44, "h": 30}],
+						"snailShell_upsidedown": [{"x": 148, "y": 118, "w": 44, "h": 30}],
+						"snailWalk": [{"x": 143, "y": 34, "w": 54, "h": 31},
+										{"x": 67, "y": 87, "w": 57, "h": 31}]
+					}
+var enemies_img = new Image()
+enemies_img.src = "static/assets/Enemy/enemies_spritesheet.png"
+
 for(var i = 0; i < imgsJson.length; i++){ // adding image to prevent flickering
 	img = new Image(imgsJson[i].meta.image)
 	console.log('Loading image ',imgsJson[i].meta.image, i)
 	imgsJson[i].bufImage = img
 	imgsJson[i].bufImage.src =imgsJson[i].meta.image 
 }
+
 function network(){
 			canvas = $('#gameCanvas')[0]
 			ctx = canvas.getContext('2d')
@@ -255,16 +281,17 @@ function network(){
 			// 	socket.send('User has been connected!!!');
 			// });
 
-			socket.on('message', function(msg, id){
-				$("#messages").append(id.slice(0,6)+": "+msg+'\n')
-				// console.log('Receiveeed')
+			socket.on('message', function(msg){
+				$("#messages").append("New : "+msg+'\n')
+				console.log('Receiveeed  ', msg)
 			});
 			socket.on('connected', function(data){
 				// $("#messages").append('<li>'+msg+'</li>')
-				// console.log('Receiveeed')
 				sid = data.id
 				p_num = data.number
-				console.log('Player id:', data)//.id, "Player Number:", data.number)
+				console.log('Player: ' + sid +' '+ p_num)
+				$('#playerData').html('Player: ' + sid.slice(0,6) +' Number: ' + p_num)
+				console.log('Player data:', data)//.id, "Player Number:", data.number)
 			});
 
 			socket.on('newPos',function(data){
@@ -273,7 +300,9 @@ function network(){
 			});
 
 			$('#sendBtn').on('click', function(){
-				socket.send($('#myMess').val());
+				data = {"msg": $('#myMess').val(), "senderId": sid}
+				console.log('Sending msg: ' + data.msg )
+				socket.send(data.msg);
 			});
 
 			$('#TICKSBtn').on('click', function(){
@@ -309,5 +338,19 @@ function network(){
 			        socket.emit('keyPress',{"key": "up", "status": false})
 			    }
 			}
+
+			canvas.addEventListener("touchstart", function(event) {
+				// document.getElementById("demo").innerHTML = "Hello World";
+				// console.log("New touch : ", event)
+		     	socket.emit('keyPress',{"key": "right", "status": true})
+				// $("#messages").append("New touch : ",msg)
+			});
+			canvas.addEventListener("touchend", function(event) {
+				// document.getElementById("demo").innerHTML = "Hello World";
+				// console.log("New touch : ", event)
+		     	socket.emit('keyPress',{"key": "right", "status": false})
+				// $("#messages").append("New touch : ",msg)
+			});
+
 
 		}

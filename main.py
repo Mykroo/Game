@@ -12,10 +12,11 @@ SCKT_LIST = []
 TICKS = 0
 FRAMES = 10
 app = Flask(__name__)
-app.config.update(
-	SECRET_KEY='secret',
-	PORT=5000,
-	DEBUG=True)
+app.config['SECRET_KEY'] = 'secret'
+# app.config.update(
+# 	SECRET_KEY='secret',
+# 	PORT=5000,
+# 	DEBUG=True)
 
 socketio = SocketIO(app)
 
@@ -45,6 +46,7 @@ socketio = SocketIO(app)
 
 @socketio.on('message')
 def handleMessage(msg):
+	print("Message received","#" * 20, msg)
 	if msg[0] == '^':
 		# print('{} TICKS SINCE SERVER START \n***************'.format(TICKS))
 		try:
@@ -52,7 +54,7 @@ def handleMessage(msg):
 		except Exception as e:
 			send(str(e))
 	else:
-		print('message', {"msg": msg, "id": request.sid})
+		# print('message', {"msg": request.id, "id": request.sid})
 		send(msg, broadcast=True)
 
 
@@ -69,12 +71,16 @@ def connection():
 	if request.sid not in SCKT_LIST:
 		print('********************   New connection!!!!   ********************')
 		# player = Player(request.sid, len(PLAYER_LIST), 0, 0)
-		player = Player(request.sid, randrange(3), 400, 250)
+		player = Player(request.sid, randrange(3), 25, 400)
 		PLAYERS[request.sid] = player
 		# PLAYER_LIST.append(player)
 		str(type(player.x))
 		SCKT_LIST.append(player.id)
 		socketio.emit("connected", {"id": player.id, "number": player.number}, room=request.sid)
+		print('********************   ",\
+			  "Player({}, {}, {}, {})".format(request.sid, randrange(3), 400, 250),\
+			  "   ********************')
+		# player.playerData()
 		# PLAYER_LIST.add(player)
 		# socket.id = random.random()
 		# socket.x=0
@@ -121,5 +127,5 @@ if __name__ == '__main__':
 		# timer = RepeatedTimer(0.05, print, 'HePLAYERSo world')
 	except Exception as e:
 		print(e)
-	socketio.run(app.run(host='0.0.0.0', port=5001))
+	socketio.run(app.run(host='0.0.0.0', port=5001, debug=True))
 	# socketio.run(app.run(host='0.0.0.0',threaded=True))

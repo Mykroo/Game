@@ -116,6 +116,10 @@ def tickss(x):
 def main():
 	return render_template("index.html")
 
+@app.route('/Hellow')
+def heee():
+	return "<h1>Helloi world</h1>"
+
 
 if __name__ == '__main__':
 	# print(app.config)

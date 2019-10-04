@@ -471,11 +471,14 @@ function network(){
 				// console.log(JSON.parse(data))
 				paintPlayers(JSON.parse(data))
 			});
-
-			$('#sendBtn').on('click', function(){
+			function sendMsg() {
 				data = {"msg": $('#myMess').val(), "senderId": sid}
 				console.log('Sending msg: ' + data.msg )
 				socket.send(data.msg);
+				$('#myMess').val('');
+			}
+			$('#sendBtn').on('click', function(){
+				sendMsg();
 			});
 
 			$('#TICKSBtn').on('click', function(){
@@ -494,6 +497,9 @@ function network(){
 			    }
 			    else if(event.keyCode == 38) {
 			        socket.emit('keyPress',{"key": "up", "status": true})
+			    }
+			    else if(event.keyCode == 13) { 
+			        sendMsg();
 			    }
 			    
 			}

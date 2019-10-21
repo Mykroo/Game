@@ -9,7 +9,7 @@ from flask_socketio import SocketIO, send
 
 CUR_MAP = Map()
 CONNS = 0
-PLAYERS = {}
+
 SCKT_LIST = []
 TICKS = 0
 FRAMES = 10
@@ -52,7 +52,7 @@ def handleMessage(msg):
 	if msg[0] == '^':
 		# print('{} TICKS SINCE SERVER START \n***************'.format(TICKS))
 		try:
-			send(eval(msg[1:], {'PLAYERS': PLAYERS}))
+			send(eval(msg[1:]))
 		except Exception as e:
 			send(str(e))
 	else:
@@ -63,9 +63,15 @@ def handleMessage(msg):
 @socketio.on('keyPress')
 def keyDown(data):
 	# print("*" * 15, data, "*" * 15)
-	PLAYERS[request.sid].keyUpdate(data['key'], data['status']) 
-	print("X:" * 15, PLAYERS[request.sid].x, "*" * 15)
-	print("Y:" , PLAYERS[request.sid].y, "*" * 15)
+	# PLAYERS[request.sid].keyUpdate(data['key'], data['status'])
+	ply = CUR_MAP.findPlayer(request.sid)
+	if ply:
+		ply.keyUpdate(data['key'], data['status'])
+		print(f'\n\n PLAYER DATA:   {ply.jsonify()}   \n\n')
+	else:
+		print('*'*5 + "Player not found" + '*'*5)
+	# print("X:" * 15, PLAYERS[request.sid].x, "*" * 15)
+	# print("Y:" , PLAYERS[request.sid].y, "*" * 15)
 
 
 @socketio.on('connect')
@@ -74,14 +80,15 @@ def connection():
 		print('********************   New connection!!!!   ********************')
 		# player = Player(request.sid, len(PLAYER_LIST), 0, 0)
 		player = Player(request.sid, randrange(3), 25, 400)
-		PLAYERS[request.sid] = player
+		CUR_MAP.addPlayer(player)
+		# PLAYERS[request.sid] = player
 		# PLAYER_LIST.append(player)
-		str(type(player.x))
-		SCKT_LIST.append(player.id)
+		# str(type(player.x))
+		# SCKT_LIST.append(player.id)
 		socketio.emit("connected", {"id": player.id, "number": player.number}, room=request.sid)
-		print('********************   ",\
-			  "Player({}, {}, {}, {})".format(request.sid, randrange(3), 400, 250),\
-			  "   ********************')
+		# print('********************   ",\
+		# 	  "Player({}, {}, {}, {})".format(request.sid, randrange(3), 400, 250),\
+		# 	  "   ********************')
 		# player.playerData()
 		# PLAYER_LIST.add(player)
 		# socket.id = random.random()
@@ -98,19 +105,21 @@ def disconnecting():
 	# for plyr in PLAYER_LIST:
 	# 	if plyr.id == request.sid:
 	# 		PLAYER_LIST.remove(plyr)
-	del(PLAYERS[request.sid])
-	SCKT_LIST.remove(request.sid)
-	print('***************\n Removing player from list.... Loging out \n***************')
-	print('***************\n {} TICKS SINCE SERVER START \n***************'.format(TICKS))
+	CUR_MAP.removePlayer(request.sid)
+	# del(PLAYERS[request.sid])
+	# SCKT_LIST.remove(request.sid)
+	# print('***************\n Removing player from list.... Loging out \n***************')
+	# print('***************\n {} TICKS SINCE SERVER START \n***************'.format(TICKS))
 
 
 def tickss(x):
-	for p in PLAYERS.values():
-		# p.x += 1
-		p.update()
-		# p.y += p.number * 0.4
+	# for p in PLAYERS.values():
+	# 	# p.x += 1
+	# 	p.update()
+	# 	# p.y += p.number * 0.4
 	CUR_MAP.updateAll()
-	socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYERS.values()]))  # skip_sid=iterTemp skip ids
+	# socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYERS.values()]))  # skip_sid=iterTemp skip ids
+	socketio.emit('newPos', json.dumps(CUR_MAP.jsonData()))  # skip_sid=iterTemp skip ids
 	# socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYER_LIST]))  # skip_sid=iterTemp skip ids
 
 

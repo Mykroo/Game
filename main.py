@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+from map import Map
 import random
 from random import randrange
 from rep_timer import RepeatedTimer
@@ -6,6 +7,7 @@ from player import Player
 from flask import Flask, render_template, request, json
 from flask_socketio import SocketIO, send
 
+CUR_MAP = Map()
 CONNS = 0
 PLAYERS = {}
 SCKT_LIST = []
@@ -46,7 +48,7 @@ socketio = SocketIO(app)
 
 @socketio.on('message')
 def handleMessage(msg):
-	print("Message received","#" * 20, msg)
+	print("Message received", "#" * 20, msg)
 	if msg[0] == '^':
 		# print('{} TICKS SINCE SERVER START \n***************'.format(TICKS))
 		try:
@@ -107,7 +109,7 @@ def tickss(x):
 		# p.x += 1
 		p.update()
 		# p.y += p.number * 0.4
-
+	CUR_MAP.updateAll()
 	socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYERS.values()]))  # skip_sid=iterTemp skip ids
 	# socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYER_LIST]))  # skip_sid=iterTemp skip ids
 

@@ -437,6 +437,8 @@ var enemie_sprites = {
 					}
 var enemies_img = new Image()
 enemies_img.src = "static/assets/Enemy/enemies_spritesheet.png"
+var tiles_img = new Image()
+tiles_img.src = "static/assets/Tiles/tiles_spritesheet.png"
 
 for(var i = 0; i < imgsJson.length; i++){ // adding image to prevent flickering
 	img = new Image(imgsJson[i].meta.image)
@@ -469,7 +471,19 @@ function network(){
 
 			socket.on('newPos',function(data){
 				// console.log(JSON.parse(data))
-				paintPlayers(JSON.parse(data))
+				// console.log(data)
+				allJson = JSON.parse(data)
+				// console.log(allJson)
+				paintPlayers(allJson.players)
+				// console.log(data)
+			});
+			socket.on('mapUpdt',function(data){
+				// console.log(JSON.parse(data))
+				console.log(data)
+				// jsss = JSON.parse(data)
+				// console.log(jsss)
+				// paintPlayers(data)
+				// console.log(data)
 			});
 			function sendMsg() {
 				data = {"msg": $('#myMess').val(), "senderId": sid}

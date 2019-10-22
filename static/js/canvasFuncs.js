@@ -35,6 +35,10 @@ function callsPerSecond(){ //My guess of how to calculate FPS
 	return fps
 }
 
+function paintMap(tiles){
+	
+}
+
 function paintPlayers(players){
 	colorRect(0, 0, canvas.width, canvas.height, '#3CAEA3')// clear scr
 	for (var p in players){
@@ -76,7 +80,15 @@ function colorCircle(X, Y, radius, fillColor, text){
 function walk(animId, px, py, rotate=false) {
 	if(animStat <= 10){
 		instance = animStat
-		drawSprite(imgsJson[animId].meta.image, imgsJson[animId][instance].frame.x,imgsJson[animId][instance].frame.y,imgsJson[animId][instance].frame.w,imgsJson[animId][instance].frame.h, px, py,imgsJson[animId][instance].sourceSize.w,imgsJson[animId][instance].sourceSize.h, rotate)
+		drawSprite(imgsJson[animId].meta.image, 
+			imgsJson[animId][instance].frame.x,
+			imgsJson[animId][instance].frame.y,
+			imgsJson[animId][instance].frame.w,
+			imgsJson[animId][instance].frame.h, 
+			px, py,
+			imgsJson[animId][instance].sourceSize.w,
+			imgsJson[animId][instance].sourceSize.h, 
+			rotate)
 		animStat +=1
 	}else{
 		animStat = 0

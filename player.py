@@ -1,14 +1,17 @@
+import json
+
+
 class Player(object):
 	"""Class for Player"""
 	def __init__(self, id, number, pox, poy):
 		"""Summary constructor
 
 		Args:
-		    id (hex): socket id
-		    number (TYPE): player number
-		    pox (int): position x
-		    poy (int): position y
-		    keys (dict): {'key':'status'}
+			id (hex): socket id
+			number (TYPE): player number
+			pox (int): position x
+			poy (int): position y
+			keys (dict): {'key':'status'}
 		"""
 		super(Player, self).__init__()
 		# self.socket = socket
@@ -21,12 +24,11 @@ class Player(object):
 			"left"  : False,
 			"right" : False,
 			"up"    : False,
-			"down"  : False
-		}
-		self.id         = id
-		self.number     = int(number)
-		self.x          = int(pox)
-		self.y          = int(poy)
+			"down"  : False}
+		self.id     = id
+		self.number = int(number)
+		self.x      = int(pox)
+		self.y      = int(poy)
 
 	def update(self):
 		# print("Updating pos ------ Keys:", self.keys )

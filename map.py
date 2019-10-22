@@ -1,7 +1,7 @@
 
 class Map(object):
 	"""docstring for Map"""
-	def __init__(self, player_list=None, width=800, height=500, tileWidth=70):
+	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70):
 		super(Map, self).__init__()
 		if player_list:
 			self.player_list = player_list
@@ -11,14 +11,19 @@ class Map(object):
 		self.enemies_list = None
 		self.props_list = None
 		self.tileWidth = tileWidth
+		self.width = width
 
-
-	def genFloor(self, tileType):
-		totalTiles = self.width / self.tileWidth
-		for nTile in xrange(0, totalTiles):
-			x = nTile * self.tileWidth
-			y = 70  # plain heigthfloor
-			self.tile_list[nTile] = Tile(x, y)
+	def genFloor(self):
+		if self.tile_list is None:
+			self.tile_list = []
+			print("*"*5, "Generating Tiles for the floor","*"*5)
+			totalTiles = int(self.width / self.tileWidth)
+			for nTile in range(0, totalTiles):
+				x = nTile * self.tileWidth
+				y = 70  # plain heigthfloor
+				self.tile_list.append(Tile(x, y))
+		else:
+			print("*"*5, " Tiles not generated !!!","*"*5)
 
 	def updateAll(self):
 		if self.player_list:
@@ -28,6 +33,8 @@ class Map(object):
 	# def addPlayer(self, sid, character, x, y):
 	def addPlayer(self, player):
 		self.player_list.append(player)
+		if len(self.player_list) > 0 and self.tile_list is None:
+			self.genFloor()
 
 	def removePlayer(self, sid):
 		for plyr in self.player_list:
@@ -44,14 +51,30 @@ class Map(object):
 			if plyr.id == sid:
 				return plyr
 
-	def jsonData(self):
-		return [x.jsonify() for x in self.player_list]
+	def jsonData(self, data="players"):
+		if self.tile_list:
+			if data == "map":
+				return [x.jsonify() for x in self.tile_list]
+		if self.player_list:
+			if data == "players":
+				return [x.jsonify() for x in self.player_list]
+		if self.enemies_list:
+			if data == "enemies":
+				return [x.jsonify() for x in self.enemies_list]
+		
 
 class Tile(object):
 	"""Class for Tile of the map"""
-	def __init__(self, x, tileType="grass", height=70, fixed=True):
+	def __init__(self, x, y, tileType="grass", height=70, fixed=True):
 		super(Tile, self).__init__()
 		self.x = x
 		self.y = y
 		self.height = height
 		self.fixed = fixed
+		self.tileType = tileType
+
+	def jsonify(self):
+		return {'x': self.x,
+				'y': self.y,
+				'tileType': self.tileType
+				}

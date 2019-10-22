@@ -81,6 +81,7 @@ def connection():
 		# player = Player(request.sid, len(PLAYER_LIST), 0, 0)
 		player = Player(request.sid, randrange(3), 25, 400)
 		CUR_MAP.addPlayer(player)
+		# CUR_MAP.genFloor()
 		# PLAYERS[request.sid] = player
 		# PLAYER_LIST.append(player)
 		# str(type(player.x))
@@ -113,13 +114,13 @@ def disconnecting():
 
 
 def tickss(x):
-	# for p in PLAYERS.values():
-	# 	# p.x += 1
-	# 	p.update()
-	# 	# p.y += p.number * 0.4
 	CUR_MAP.updateAll()
 	# socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYERS.values()]))  # skip_sid=iterTemp skip ids
-	socketio.emit('newPos', json.dumps(CUR_MAP.jsonData()))  # skip_sid=iterTemp skip ids
+	plyJson = CUR_MAP.jsonData()
+	tilesJson = CUR_MAP.jsonData("map")
+	allJson = {"players": plyJson, "tiles": tilesJson}
+	# print("JSONDATA: ", json.dumps(allJson))
+	socketio.emit('newPos', json.dumps(allJson))  # skip_sid=iterTemp skip ids
 	# socketio.emit('newPos', json.dumps([x.jsonify() for x in PLAYER_LIST]))  # skip_sid=iterTemp skip ids
 
 

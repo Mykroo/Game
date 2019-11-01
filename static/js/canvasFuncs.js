@@ -44,16 +44,16 @@ function drawCordenates(x, y){
 function paintMap(tiles){
 	for (var i = 0; i < tiles.length; i++) {
 		// console.log("Tile ", i, tiles[i])
-		y = canvas.height - tiles[i].y
+		
 		ctx.drawImage(tiles_img, tiles_imgs[tiles[i].tileType].x, 
 	 				 tiles_imgs[tiles[i].tileType].y,
 	 				 tiles_imgs[tiles[i].tileType].w,
 	 				 tiles_imgs[tiles[i].tileType].h, 
 	 				 tiles[i].x,
-	 				 y,
+	 				 tiles[i].y,
 	 				 tiles_imgs[tiles[i].tileType].w,
 	 				 tiles_imgs[tiles[i].tileType].h,)
-		drawCordenates(tiles[i].x, y)
+		drawCordenates(tiles[i].x, tiles[i].y)
 	}
 }
 
@@ -138,8 +138,8 @@ function drawRotatedImage(image, x, y, angle) {
 function drawSprite(image, sx, sy, sWidth, sHeight, dx, dy, dWidth=0, dHeight=0,rotate=true) {
 	// var imgg = new Image(image)
 	// ctx.fill()
-	dx -= (sWidth/2) 
-	dy -= (sHeight/2) 
+	dx -= (sWidth) 
+	dy -= (sHeight) 
 	var img = new Image();
 	img.onload = function () {
 		ctx.drawImage(img, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)

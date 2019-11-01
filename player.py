@@ -17,7 +17,7 @@ class Player(object):
 		# self.socket = socket
 		self.animation = "walk"
 		self.rotate = False
-		self.speed  = 5
+		self.speed  = 10
 		self.keys = {
 			"tab"   : False,
 			"space" : False,
@@ -29,24 +29,42 @@ class Player(object):
 		self.number = int(number)
 		self.x      = int(pox)
 		self.y      = int(poy)
+		self.jumping = False
+		self.jumpCount = 0
 
 	def update(self):
 		# print("Updating pos ------ Keys:", self.keys )
 		self.rotate = False
+		self.animation = "still"
 		if self.keys["tab"]:
 			pass
 		if self.keys["space"]:
-			pass
-
+			if self.animation != "airborne":
+				self.jumping = True
+				self.animation = "airborne"
 		if self.keys["left"]:
 			self.x -= self.speed
 			self.rotate = True
 		if self.keys["right"]:
 			self.x += self.speed
 		if self.keys["up"]:
-			self.y -= self.speed
+			pass  # self.y -= self.speed
 		if self.keys["down"]:
-			self.y += self.speed
+			if self.jumping is False:
+				self.animation = "crouch"
+			else:
+				self.y += int(self.speed * 0.5)
+		self.jump()
+
+	def jump(self):
+		# print("jumping")
+		if self.jumping and self.jumpCount <= 10:
+			self.jumpCount += 1
+			self.y -= self.speed * 2
+			self.animation = "airborne"
+		else:
+			self.jumpCount = 0
+			self.jumping = False
 
 	def animationStatus():
 		pass

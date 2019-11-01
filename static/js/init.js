@@ -506,7 +506,10 @@ function network(){
 			})
 
 			document.onkeydown = function(event) {
-			    if(event.keyCode == 39) {
+			    if(event.keyCode == 32) {
+			        socket.emit('keyPress',{"key": "space", "status": true})
+			    }
+			    else if(event.keyCode == 39) {
 			        socket.emit('keyPress',{"key": "right", "status": true})
 			    }
 			    else if(event.keyCode == 40) {
@@ -524,7 +527,10 @@ function network(){
 			    
 			}
 			document.onkeyup = function(event) {
-			    if(event.keyCode == 39) {
+			    if(event.keyCode == 32) {
+			        socket.emit('keyPress',{"key": "space", "status": false})
+			    }
+			    else if(event.keyCode == 39) {
 			        socket.emit('keyPress',{"key": "right", "status": false})
 			    }
 			    else if(event.keyCode == 40) {

@@ -1,7 +1,7 @@
 
 class Map(object):
 	"""docstring for Map"""
-	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70, gravity=0):
+	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70, gravity=5):
 		super(Map, self).__init__()
 		if player_list:
 			self.player_list = player_list
@@ -12,16 +12,17 @@ class Map(object):
 		self.props_list = None
 		self.tileWidth = tileWidth
 		self.width = width
+		self.height = height
 		self.gravity = gravity
 
 	def genFloor(self):
 		if self.tile_list is None:
 			self.tile_list = []
-			print("*"*5, "Generating Tiles for the floor","*"*5)
+			# print("*"*5, "Generating Tiles for the floor","*"*5)
 			totalTiles = int(self.width / self.tileWidth)
 			for nTile in range(0, totalTiles):
 				x = nTile * self.tileWidth
-				y = 70  # plain heigthfloor
+				y = self.height - self.tileWidth  # plain heigthfloor
 				self.tile_list.append(Tile(x, y))
 		else:
 			print("*" * 5, " Tiles not generated !!!", "*" * 5)

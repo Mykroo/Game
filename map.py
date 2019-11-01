@@ -1,7 +1,7 @@
 
 class Map(object):
 	"""docstring for Map"""
-	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70):
+	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70, gravity=0):
 		super(Map, self).__init__()
 		if player_list:
 			self.player_list = player_list
@@ -12,6 +12,7 @@ class Map(object):
 		self.props_list = None
 		self.tileWidth = tileWidth
 		self.width = width
+		self.gravity = gravity
 
 	def genFloor(self):
 		if self.tile_list is None:
@@ -23,12 +24,25 @@ class Map(object):
 				y = 70  # plain heigthfloor
 				self.tile_list.append(Tile(x, y))
 		else:
-			print("*"*5, " Tiles not generated !!!","*"*5)
+			print("*" * 5, " Tiles not generated !!!", "*" * 5)
 
 	def updateAll(self):
 		if self.player_list:
 			for plyr in self.player_list:
+				plyr.y += self.gravity
 				plyr.update()
+				self.checkTileCollitions(plyr)
+
+	def checkTileCollitions(self, player):
+		tileIndx = int(player.x / self.tileWidth)
+		# print("Check colision...... ", "!!!!!!"*5)
+		if tileIndx < len(self.tile_list):
+			if (player.x >= self.tile_list[tileIndx].x and
+						player.x < (self.tile_list[tileIndx].x + self.tileWidth) and
+						player.y > self.tile_list[tileIndx].y and
+						player.y <= (self.tile_list[tileIndx].y + self.tile_list[tileIndx].height)):
+				player.y = self.tile_list[tileIndx].y
+				print("Collisionnnnnnnn!!!! " * 5)
 
 	# def addPlayer(self, sid, character, x, y):
 	def addPlayer(self, player):
@@ -61,7 +75,6 @@ class Map(object):
 		if self.enemies_list:
 			if data == "enemies":
 				return [x.jsonify() for x in self.enemies_list]
-		
 
 class Tile(object):
 	"""Class for Tile of the map"""

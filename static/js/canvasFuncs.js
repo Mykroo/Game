@@ -34,19 +34,26 @@ function callsPerSecond(){ //My guess of how to calculate FPS
 	ctx.fillText(fps,topLeftX , topLeftY+15);
 	return fps
 }
-
+function drawCordenates(x, y){
+	colorRect(x, y, 40, 20, '#4f4f4f')
+	ctx.font = "15px Console";
+	ctx.fillStyle = "lightgreen";
+	ctx.textAlign = "left";
+	ctx.fillText(x + ', ' + y , x, y+15);
+}
 function paintMap(tiles){
 	for (var i = 0; i < tiles.length; i++) {
 		// console.log("Tile ", i, tiles[i])
 		y = canvas.height - tiles[i].y
 		ctx.drawImage(tiles_img, tiles_imgs[tiles[i].tileType].x, 
 	 				 tiles_imgs[tiles[i].tileType].y,
-	 				tiles_imgs[tiles[i].tileType].w,
+	 				 tiles_imgs[tiles[i].tileType].w,
 	 				 tiles_imgs[tiles[i].tileType].h, 
 	 				 tiles[i].x,
 	 				 y,
 	 				 tiles_imgs[tiles[i].tileType].w,
 	 				 tiles_imgs[tiles[i].tileType].h,)
+		drawCordenates(tiles[i].x, y)
 	}
 }
 
@@ -60,13 +67,14 @@ function paintPlayers(players){
 		// ctx.drawImage(img,90,130,50,60,10,10,50,60)
 		walk(players[p].number, players[p]['x'], players[p]['y'], players[p]['rotate'])
 		// drawSprite(imgsJson.meta.image, 0,0,67,92, players[p]['x'], players[p]['y'],71,95)
+		drawCordenates(players[p]['x'], players[p]['y']) // draw player cordenates
 	}
 	/*
 	for (var j in json.frames){
 		json.frames[j]
 		drawSprite(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
 	}*/
-	// callsPerSecond()
+	callsPerSecond()
 
 }
 function ranColor(){
@@ -121,7 +129,8 @@ function drawRotatedImage(image, x, y, angle) {
  
 	// draw it up and to the left by half the width
 	// and height of the image 
-	context.drawImage(image, -(image.width/2), -(image.height/2));
+	// context.drawImage(image, -(image.width/2), -(image.height/2)); //drawing being x,y the center of the img
+	context.drawImage(image, image.width, image.height);
  
 	// and restore the co-ords to how they were when we began
 	context.restore(); 

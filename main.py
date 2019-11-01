@@ -67,7 +67,7 @@ def keyDown(data):
 	ply = CUR_MAP.findPlayer(request.sid)
 	if ply:
 		ply.keyUpdate(data['key'], data['status'])
-		print(f'\n\n PLAYER DATA:   {ply.jsonify()}   \n\n')
+		# print(f'\n\n PLAYER DATA:   {ply.jsonify()}   \n\n')
 	else:
 		print('*'*5 + "Player not found" + '*'*5)
 	# print("X:" * 15, PLAYERS[request.sid].x, "*" * 15)
@@ -79,7 +79,7 @@ def connection():
 	if request.sid not in SCKT_LIST:
 		print('********************   New connection!!!!   ********************')
 		# player = Player(request.sid, len(PLAYER_LIST), 0, 0)
-		player = Player(request.sid, randrange(3), 25, 400)
+		player = Player(request.sid, randrange(3), 0, 0)
 		CUR_MAP.addPlayer(player)
 		# CUR_MAP.genFloor()
 		# PLAYERS[request.sid] = player

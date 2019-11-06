@@ -3,7 +3,7 @@ import json
 
 class Player(object):
 	"""Class for Player"""
-	def __init__(self, id, number, pox, poy):
+	def __init__(self, idd, number, pox, poy):
 		"""Summary constructor
 
 		Args:
@@ -25,7 +25,7 @@ class Player(object):
 			"right" : False,
 			"up"    : False,
 			"down"  : False}
-		self.id     = id
+		self.id     = idd
 		self.number = int(number)
 		self.x      = int(pox)
 		self.y      = int(poy)
@@ -58,9 +58,9 @@ class Player(object):
 
 	def jump(self):
 		# print("jumping")
-		if self.jumping and self.jumpCount <= 10:
+		if self.jumping and self.jumpCount <= 5:
 			self.jumpCount += 1
-			self.y -= self.speed * 2
+			self.y -= self.speed * 4
 			self.animation = "airborne"
 		else:
 			self.jumpCount = 0

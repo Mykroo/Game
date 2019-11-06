@@ -1,7 +1,8 @@
 
 class Map(object):
 	"""docstring for Map"""
-	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70, gravity=5):
+
+	def __init__(self, player_list=None, width=1800, height=500, tileWidth=70, gravity=10):
 		super(Map, self).__init__()
 		if player_list:
 			self.player_list = player_list
@@ -43,7 +44,7 @@ class Map(object):
 						player.y > self.tile_list[tileIndx].y and
 						player.y <= (self.tile_list[tileIndx].y + self.tile_list[tileIndx].height)):
 				player.y = self.tile_list[tileIndx].y
-				print("Collisionnnnnnnn!!!! " * 5)
+				# print("Collisionnnnnnnn!!!! " * 5)
 
 	# def addPlayer(self, sid, character, x, y):
 	def addPlayer(self, player):

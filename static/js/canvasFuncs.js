@@ -56,10 +56,37 @@ function paintMap(tiles){
 		drawCordenates(tiles[i].x, tiles[i].y)
 	}
 }
-
+function randColor(){
+	hexStr = '0123456789ABCDEF'
+	color = "#"
+	for (var i = 0; i < 6; i++) {
+		color += hexStr[Math.floor(Math.random() * 16)]
+	}
+	return color
+}
 function paintPlayers(players){
-	colorRect(0, 0, canvas.width, canvas.height, '#3CAEA3')// clear scr
+	colorRect(0, 0, 1800, canvas.height, "#3CAEA4")// canvas.width should be map.width
+	// colorRect(0, 0, canvas.width, canvas.height, "#3CAEA4")// clear scr
 	for (var p in players){
+		if (players[p].id == sid) {
+			locPlayer = players[p]
+			if (locPlayer.x > (tot_x_trans + (canvas.width/2))) {
+				x_trans = locPlayer.x - (tot_x_trans + (canvas.width/2)) 
+				tot_x_trans += x_trans
+				ctx.translate(-x_trans, 0)
+				// console.log('ctx.translate(-'+x_trans+', 0)')
+				// console.log('ctx.transform(1,0,0,1, -'+x_trans+', 0)')
+				// ctx.transform(1,0,0,1, -x_trans, 0);
+			}else if (locPlayer.x  < tot_x_trans) {
+				x_trans = locPlayer.x - tot_x_trans 
+				tot_x_trans += x_trans
+				// console.log('ctx.translate('+x_trans+', 0)')
+				ctx.translate(-x_trans, 0)
+				// console.log('ctx.transform(1,0,0,1, '+x_trans+', 0)')
+				// ctx.transform(1,0,0,1, x_trans, 0);
+			}
+			// ctx.translate(locPlayer.x,0)
+		}
 		// console.log(players[p])
 		// console.log('PAINTING Player '+ players[p]['number'] + 'x: '+players[p]['x']+'y:'+players[p]['y'] )
 		// console.log('colorCircle('+players[p]['x']+','+players[p]['y']+',30,'+players[p]['id']+')')

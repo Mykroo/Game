@@ -136,7 +136,7 @@ def heee():
 if __name__ == '__main__':
 	# print(app.config)
 	# socketio.run(app.run())
-	FRAMES = 15
+	FRAMES = 10
 	time = 1 / FRAMES
 	try:
 		gameClock = RepeatedTimer(time, tickss, TICKS)

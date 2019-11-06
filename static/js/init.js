@@ -2,7 +2,9 @@ console.log('init...')
 var secCalls = 0
 var lastSec;
 var maxFPS = 0
-
+var locPlayer;
+var x_trans = 0;
+var tot_x_trans = 0;
 var PLAYER_COLORS = {};
 var sid;
 var p_num;

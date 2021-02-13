@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Chat romo</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+	<script src="{{ url_for('static',filename='js/init.js') }}"></script>
+	<script src="{{ url_for('static',filename='js/canvasFuncs.js') }}"></script>
+</head>
+<body style="overflow:hidden;">
+
+	<script type="text/javascript">
+
+		//The next lines are for stats.js square
+		// javascript:(function(){var script=document.createElement('script');script.onload=function(){var stats=new Stats();document.body.appendChild(stats.dom);requestAnimationFrame(function loop(){stats.update();requestAnimationFrame(loop)});};script.src='//mrdoob.github.io/stats.js/build/stats.min.js';document.head.appendChild(script);})()
+		//end stat.js
+
+		$(document).ready(function () {
+			network()
+		});
+
+		// console.log('Data waiting for ready')
+
+	</script>
+	<div width="800" height="1000">
+		<canvas id="gameCanvas" width="1000" height="500">
+		</canvas>
+		<textarea name="" id="messages" cols="111" rows="10"></textarea>
+	</div>
+	<canvas id="gameCanvas2" width="200" height="000">
+	</canvas>
+	<div id="chat" style="float: right;">
+		<h4 id="playerData">PLAYER</h4>
+		
+	</div>
+	<input type="text" id="myMess">
+	<input type="button" id="sendBtn" value="Send">
+	<input type="button" id="TICKSBtn" value="GET TIKITIKI">
+
+
+	<!-- Loading JS files -->
+</body>
+</html>
